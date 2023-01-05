@@ -82,10 +82,16 @@ public class ik_calculate_ver3 : MonoBehaviour
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+        /*
         float c2 = -ax/L1;
         float s2 = ay >= 0 ? Mathf.Sqrt(1-c2*c2) : -Mathf.Sqrt(1-c2*c2);
         float c1 = -ay/(L1*s2);
         float s1 = az/(L1*s2);
+        */
+        float s2 = ax/L1;
+        float c2 = ay >= 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
+        float c1 = -ay/(L1*c2);
+        float s1 = az/(L1*c2);
 
         //theta 1 ~ 4까지 계산
         float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
@@ -111,35 +117,43 @@ public class ik_calculate_ver3 : MonoBehaviour
 
         float get_theta4 = left_target_elbow_pitch.transform.localEulerAngles.y;
         float s4 = (L1+cz)/L2;
-        float c4 = Mathf.Sqrt(1-s4*s4);
+        float c4 = (L1+cz) < 0 ? Mathf.Sqrt(1-s4*s4) : -Mathf.Sqrt(1-s4*s4);
         float c3 = -cy/(L2*c4);
         float s3 = -cx/(L2*c4);
         //Debug.Log("c4: "+c4+" "+"s4: "+s4);
         
         float calcu_theta3 = Mathf.Atan2(s3, c3)*Mathf.Rad2Deg;
         float calcu_theta4 = Mathf.Atan2(s4, c4)*Mathf.Rad2Deg;
-        //Debug.Log("calcu_theta 3: "+calcu_theta3+" "+"calcu_theta 4: "+calcu_theta4);
+        Debug.Log("calcu_theta 3: "+calcu_theta3+" "+"calcu_theta 4: "+calcu_theta4);
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         float calcu_theta5 =left_vr.transform.localEulerAngles.y;
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
-        float theta1 = -calcu_theta1+180;
-        float theta2 = -calcu_theta2-90;
-        float theta3 = -(calcu_theta3+90);
-        float theta4 = -calcu_theta4-90;
-        float theta5 = calcu_theta5;
+        float theta1 = -(calcu_theta1+180);
+        float theta2 = -(calcu_theta2+180);
+        float theta3 = -(calcu_theta3-90);
+        float theta4 = -(calcu_theta4+90);
+        float theta5 = (calcu_theta5);
         //float theta2 = constrain(calcu_theta2-90, -90, 90);
         //float theta3 = constrain(-(calcu_theta3+90),-89,89);
         //float theta4 = constrain(-calcu_theta4-90,-179,-5);
 
         //특이점 처리 구간////////////////////////////////////////////////////////////////////////////////////////////////////////
-        if(theta2==-90){  //theta2가 90인 상황에서는 theta4가 반응하지 못함
-            theta2=1;
-        }
-        if(theta4>-5){  //theta4가 0인 상황에서는 동작이 이상해짐
-            theta4=-5;
+        float theta2_sig = 3;  //theta2 특이점 방지 오차 각도
+        float theta4_sig = -2;  //theta4 특이점 방지 오차 각도
+
+        //theta2 각도가 -90일때 발생하는 theta1에 대한 특이점 방지
+        /*
+        if(theta2>=-90-theta2_sig && theta2<-90) theta2 = -90-theta2_sig;
+        else if(theta2>-90 && theta2<-90+theta2_sig) theta2 = -90+theta2_sig;
+        */
+
+        //theta4가 반대로 굽히는 상황에서는 theta3가 180도 돌아감
+        if(theta4 > theta4_sig){
+            theta4 = theta4_sig;
+            theta3 = 0;
         }
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
