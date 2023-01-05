@@ -135,9 +135,9 @@ public class ik_calculate_ver3 : MonoBehaviour
         //float theta4 = constrain(-calcu_theta4-90,-179,-5);
 
         //특이점 처리 구간////////////////////////////////////////////////////////////////////////////////////////////////////////
-        //if(theta2==-90){  //theta2가 90인 상황에서는 theta4가 반응하지 못함
-        //    theta2=1;
-        //}
+        if(theta2==-90){  //theta2가 90인 상황에서는 theta4가 반응하지 못함
+            theta2=1;
+        }
         if(theta4>-5){  //theta4가 0인 상황에서는 동작이 이상해짐
             theta4=-5;
         }
