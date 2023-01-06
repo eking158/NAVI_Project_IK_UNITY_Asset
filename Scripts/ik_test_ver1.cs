@@ -46,7 +46,7 @@ public class ik_test_ver1 : MonoBehaviour
         float ax=ax_pre/10000;
         float ay=ay_pre/10000;
         float az=az_pre/10000;  //어깨를 기준으로 본 팔꿈치 좌표 (소수점 변환 완료)
-        //Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az);
+        Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az);
         /*
         float s2 = ax/L1;
         float c2 = Mathf.Sqrt(ay*ay+az*az)/L1;
@@ -58,11 +58,11 @@ public class ik_test_ver1 : MonoBehaviour
         float calcu_theta2 = Mathf.Atan2(s2, c2)*Mathf.Rad2Deg;
         */
         float s2 = ax/L1;
-        float c2 = ax >= 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
+        float c2 = (ay>0) && (ax<0) && (az>=0) ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
         //Debug.Log("c2: "+c2+" "+"s2: "+s2);
         float c1 = ay/(L1*c2);
         float s1 = az/(L1*c2);
-        Debug.Log("c1: "+c1+" "+"s1: "+s1);
+        //Debug.Log("c1: "+c1+" "+"s1: "+s1);
 
         float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
         //float calcu_theta1 = Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
@@ -70,7 +70,7 @@ public class ik_test_ver1 : MonoBehaviour
         //Debug.Log("calcu_theta1: "+calcu_theta1+" "+"calcu_theta2: "+calcu_theta2);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
-        float theta1 = -(calcu_theta1-180);
+        float theta1 = (calcu_theta1-0);
         float theta2 = -(calcu_theta2+180);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //특이점 예외 처리
