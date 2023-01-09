@@ -75,7 +75,7 @@ public class ik_calculate_ver3 : MonoBehaviour
         float ax=ax_pre/10000;
         float ay=ay_pre/10000;
         float az=az_pre/10000;  //어깨를 기준으로 본 팔꿈치 좌표 (소수점 변환 완료)
-        //Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az+" "+"ax*ay*az: "+ax*ay*az);
+        //Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az);
         
 
         float ay2=(float)left_target_wrist.transform.position.x-left_target_shoulder.position.x;
@@ -97,10 +97,11 @@ public class ik_calculate_ver3 : MonoBehaviour
         */
 
         //theta 1 ~ 4까지 계산
-        float object_theta1 = (ay>0) ? (left_target_shoulder.transform.eulerAngles.x-360) : (-left_target_shoulder.transform.eulerAngles.x+180);
+        //float object_theta1 = (ay>0) ? (left_target_shoulder.transform.eulerAngles.z-360) : (-left_target_shoulder.transform.eulerAngles.z+180);
+        float object_theta1 = (left_target_shoulder.transform.eulerAngles.z);
         if(object_theta1>180 && object_theta1<=360) object_theta1 = object_theta1-360;
         //float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
-        float calcu_theta1 = object_theta1;
+        float calcu_theta1 = 90-object_theta1;
         float calcu_theta2 = Mathf.Atan2(s2, c2)*Mathf.Rad2Deg;
         Debug.Log("calcu_theta1: "+calcu_theta1+" "+"c2: "+c2+" "+"s2: "+s2+" "+"c1: "+c1+" "+"s1: "+s1+" "+"L1: "+L1);
 
