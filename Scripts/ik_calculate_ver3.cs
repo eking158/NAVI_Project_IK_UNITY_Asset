@@ -69,10 +69,13 @@ public class ik_calculate_ver3 : MonoBehaviour
         //Debug.Log("L1: "+L1+" "+"L2: "+L2);
 
         
-        float ax=(float)left_target_elbow.transform.position.x-left_target_shoulder.position.x;
-        float ay=(float)left_target_elbow.transform.position.y-left_target_shoulder.position.y;
-        float az=(float)left_target_elbow.transform.position.z-left_target_shoulder.position.z;  //어깨를 기준으로 본 팔꿈치 좌표
-        //Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az);
+        float ax_pre=(int)((left_target_elbow.transform.position.x-left_target_shoulder.position.x)*10000);
+        float ay_pre=(int)((left_target_elbow.transform.position.y-left_target_shoulder.position.y)*10000);
+        float az_pre=(int)((left_target_elbow.transform.position.z-left_target_shoulder.position.z)*10000);  //어깨를 기준으로 본 팔꿈치 좌표 (소수점 변환 준비)
+        float ax=ax_pre/10000;
+        float ay=ay_pre/10000;
+        float az=az_pre/10000;  //어깨를 기준으로 본 팔꿈치 좌표 (소수점 변환 완료)
+        //Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az+" "+"ax*ay*az: "+ax*ay*az);
         
 
         float ay2=(float)left_target_wrist.transform.position.x-left_target_shoulder.position.x;
@@ -82,21 +85,24 @@ public class ik_calculate_ver3 : MonoBehaviour
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-        /*
         float c2 = -ax/L1;
-        float s2 = ay >= 0 ? Mathf.Sqrt(1-c2*c2) : -Mathf.Sqrt(1-c2*c2);
+        float s2 = ax >= 0 ? Mathf.Sqrt(1-c2*c2) : -Mathf.Sqrt(1-c2*c2);
         float c1 = -ay/(L1*s2);
         float s1 = az/(L1*s2);
-        */
+        /*
         float s2 = ax/L1;
         float c2 = ay >= 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
         float c1 = -ay/(L1*c2);
         float s1 = az/(L1*c2);
+        */
 
         //theta 1 ~ 4까지 계산
-        float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
+        float object_theta1 = (ay>0) ? (left_target_shoulder.transform.eulerAngles.x-360) : (-left_target_shoulder.transform.eulerAngles.x+180);
+        if(object_theta1>180 && object_theta1<=360) object_theta1 = object_theta1-360;
+        //float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
+        float calcu_theta1 = object_theta1;
         float calcu_theta2 = Mathf.Atan2(s2, c2)*Mathf.Rad2Deg;
-        //Debug.Log("calcu_theta1: "+calcu_theta1+" "+"c2: "+c2+" "+"s2: "+s2+" "+"c1: "+c1+" "+"s1: "+s1+" "+"L1: "+L1);
+        Debug.Log("calcu_theta1: "+calcu_theta1+" "+"c2: "+c2+" "+"s2: "+s2+" "+"c1: "+c1+" "+"s1: "+s1+" "+"L1: "+L1);
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -124,7 +130,7 @@ public class ik_calculate_ver3 : MonoBehaviour
         
         float calcu_theta3 = Mathf.Atan2(s3, c3)*Mathf.Rad2Deg;
         float calcu_theta4 = Mathf.Atan2(s4, c4)*Mathf.Rad2Deg;
-        Debug.Log("calcu_theta 3: "+calcu_theta3+" "+"calcu_theta 4: "+calcu_theta4);
+        //Debug.Log("calcu_theta 3: "+calcu_theta3+" "+"calcu_theta 4: "+calcu_theta4);
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -132,7 +138,7 @@ public class ik_calculate_ver3 : MonoBehaviour
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
         float theta1 = -(calcu_theta1+180);
-        float theta2 = -(calcu_theta2+180);
+        float theta2 = -(calcu_theta2+90);
         float theta3 = -(calcu_theta3-90);
         float theta4 = -(calcu_theta4+90);
         float theta5 = (calcu_theta5);
@@ -179,7 +185,7 @@ public class ik_calculate_ver3 : MonoBehaviour
         }
         */
 
-        Debug.Log("theta 1: "+theta1+"  "+"theta 2: "+theta2+"  "+"theta3: "+theta3+"  "+"theta4: "+theta4);
+        //Debug.Log("theta 1: "+theta1+"  "+"theta 2: "+theta2+"  "+"theta3: "+theta3+"  "+"theta4: "+theta4);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 

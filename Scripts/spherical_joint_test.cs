@@ -15,9 +15,11 @@ public class spherical_joint_test : MonoBehaviour
 
     void Update()
     {
-        float shoulder_pitch =left_target_shoulder.transform.localEulerAngles.x;
-        float shoulder_roll =left_target_shoulder.transform.localEulerAngles.z;
-        float shoulder_yaw =left_target_shoulder.transform.localEulerAngles.y;
+        float shoulder_pitch =left_target_shoulder.transform.eulerAngles.x;
+        float shoulder_roll =left_target_shoulder.transform.eulerAngles.z-90;
+        float shoulder_yaw =left_target_shoulder.transform.eulerAngles.y;
+
+        Debug.Log("shoulder_pitch: "+shoulder_pitch+" "+"shoulder_roll: "+shoulder_roll+" "+"shoulder_yaw: "+shoulder_yaw);
         
         if (!float.IsNaN(shoulder_pitch)){
             left_shoulder_pitch.transform.localEulerAngles = new Vector3(shoulder_pitch, 0, 0);
