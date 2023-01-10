@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ControlIk : MonoBehaviour
+public class ControlIk_backup : MonoBehaviour
 {
     public Transform target_joint_1, target_joint_2, target_joint_3, target_end;
     public Transform servo_1, servo_2;
@@ -18,11 +18,7 @@ public class ControlIk : MonoBehaviour
         float px=(float)target_end.transform.position.x;
         float py=(float)target_end.transform.position.y;
         float pz=(float)target_end.transform.position.z;
-
-        float px2=(float)target_joint_3.transform.position.x;
-        float py2=(float)target_joint_3.transform.position.y;
-        float pz2=(float)target_joint_3.transform.position.z;
-        Debug.Log("px: "+px+" "+ "py: " + py + " " + "pz: " + pz + " ");
+        //Debug.Log("px: "+px+" "+ "py: " + py + " " + "pz: " + pz + " ");
 
         float L1=(float)Vector3.Distance(target_joint_1.transform.position,target_joint_2.transform.position);  //d1
         float L2=(float)Vector3.Distance(target_joint_2.transform.position,target_joint_3.transform.position);  //a1
@@ -41,27 +37,12 @@ public class ControlIk : MonoBehaviour
         float c1_c = Mathf.Cos((theta1)*Mathf.Deg2Rad);
 
         float bx_pre = (int)((c1_c*ax - az*s1_c)*10000);
-        //float bx_pre = (int)((ax)*10000);
         float by_pre = (int)(ay*10000);
         float bz_pre = (int)((c1_c*az + ax*s1_c)*10000);
         float bx=bx_pre/10000;
         float by=by_pre/10000;
         float bz=bz_pre/10000;
         Debug.Log("bx: "+bx+" "+"by: "+by+" "+"bz: "+bz);
-
-        float ax2=(target_joint_3.transform.position.x-target_joint_2.position.x);
-        float ay2=(target_joint_3.transform.position.y-target_joint_2.position.y);
-        float az2=(target_joint_3.transform.position.z-target_joint_2.position.z);  //어깨를 기준으로 본 팔꿈치 좌표
-        //Debug.Log("ax: "+ax+" "+ "ay: " + ay + " " + "az: " + az + " ");
-
-        float bx2_pre = (int)((c1_c*ax - az*s1_c)*10000);
-        //float bx2_pre = (int)((ax2)*10000);
-        float by2_pre = (int)(ay*10000);
-        float bz2_pre = (int)((c1_c*az + ax*s1_c)*10000);
-        float bx2=bx2_pre/10000;
-        float by2=by2_pre/10000;
-        float bz2=bz2_pre/10000;
-        //Debug.Log("bx2: "+bx2+" "+"by2: "+by2+" "+"bz2: "+bz2);
 
         float s2=(py-L1)/L3;
         //float c2 = Mathf.Sqrt(1-s2*s2);
