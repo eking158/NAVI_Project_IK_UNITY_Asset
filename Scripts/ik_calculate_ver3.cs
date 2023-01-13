@@ -84,24 +84,25 @@ public class ik_calculate_ver3 : MonoBehaviour
         //Debug.Log("ax2: "+ax2+" "+"ay2: "+ay2+" "+"az2: "+az2);
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
+        /*
         float c2 = -ax/L1;
-        float s2 = ax >= 0 ? Mathf.Sqrt(1-c2*c2) : -Mathf.Sqrt(1-c2*c2);
+        float s2 = ax > 0 ? Mathf.Sqrt(1-c2*c2) : -Mathf.Sqrt(1-c2*c2);
         float c1 = -ay/(L1*s2);
         float s1 = az/(L1*s2);
-        /*
+        */
         float s2 = ax/L1;
-        float c2 = ay >= 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
+        float c2 = ay > 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
         float c1 = -ay/(L1*c2);
         float s1 = az/(L1*c2);
-        */
+        
 
         //theta 1 ~ 4까지 계산
         //float object_theta1 = (ay>0) ? (left_target_shoulder.transform.eulerAngles.z-360) : (-left_target_shoulder.transform.eulerAngles.z+180);
         float object_theta1 = (left_target_shoulder.transform.eulerAngles.z);
         if(object_theta1>180 && object_theta1<=360) object_theta1 = object_theta1-360;
-        //float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
-        float calcu_theta1 = 90-object_theta1;
+        //float calcu_theta1 = 90-object_theta1;
+
+        float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
         float calcu_theta2 = Mathf.Atan2(s2, c2)*Mathf.Rad2Deg;
         Debug.Log("calcu_theta1: "+calcu_theta1+" "+"c2: "+c2+" "+"s2: "+s2+" "+"c1: "+c1+" "+"s1: "+s1+" "+"L1: "+L1);
 
@@ -139,7 +140,7 @@ public class ik_calculate_ver3 : MonoBehaviour
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
         float theta1 = -(calcu_theta1+180);
-        float theta2 = -(calcu_theta2+90);
+        float theta2 = -(calcu_theta2+180);
         float theta3 = -(calcu_theta3-90);
         float theta4 = -(calcu_theta4+90);
         float theta5 = (calcu_theta5);

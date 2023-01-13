@@ -49,8 +49,8 @@ public class ik_test_ver1 : MonoBehaviour
         Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az+" "+"ax*ay*az: "+ax*ay*az);
         
         float s2 = ax/L1;
-        //float c2 = (ay>0)&&(az == 0) ? (Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2));
-        float c2 = (az == 0) ? (ay > 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2)) : (az > 0 ? (-Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2)));
+        float c2 = (ay>0)&&(az == 0) ? (Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2));
+        //float c2 = (az == 0) ? (ay > 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2)) : (az > 0 ? (-Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2)));
         //float c2 = (ay>0) ? (az >= 0 ? -Mathf.Sqrt(1-s2*s2) : Mathf.Sqrt(1-s2*s2)) : (az >= 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2));
         //Debug.Log("c2: "+c2+" "+"s2: "+s2);
         float c1 = ay/(L1*c2);
@@ -60,9 +60,9 @@ public class ik_test_ver1 : MonoBehaviour
         //float calcu_theta1 = (az == 0) ? Mathf.Atan2(s1, c1)*Mathf.Rad2Deg : Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
         //float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
         float calcu_theta1 = Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
-        if(az==0 && ax!=0 && ay!=0) calcu_theta1 = Mathf.Atan2(az, Mathf.Abs(ay))*Mathf.Rad2Deg;
-        else if(ay==0 && ax!=0 && az!=0) calcu_theta1 = Mathf.Atan2(Mathf.Abs(az), ay)*Mathf.Rad2Deg;
-        else if(ax !=0 && ay!=0 && az!=0) calcu_theta1 = (ay>0) ? (Mathf.Atan2(-az, -ay)*Mathf.Rad2Deg) : (Mathf.Atan2(az, ay)*Mathf.Rad2Deg);
+        //if(az==0 && ax!=0 && ay!=0) calcu_theta1 = Mathf.Atan2(az, Mathf.Abs(ay))*Mathf.Rad2Deg;
+        //else if(ay==0 && ax!=0 && az!=0) calcu_theta1 = Mathf.Atan2(Mathf.Abs(az), ay)*Mathf.Rad2Deg;
+        //else if(ax !=0 && ay!=0 && az!=0) calcu_theta1 = (ay>0) ? (Mathf.Atan2(-az, -ay)*Mathf.Rad2Deg) : (Mathf.Atan2(az, ay)*Mathf.Rad2Deg);
         //float calcu_theta1 = Mathf.Atan(az/(-ay))*Mathf.Rad2Deg;
         //Debug.Log("Atan2: "+Mathf.Atan2(az, -ay)*Mathf.Rad2Deg+" "+"az/-ay "+az/(-ay));
         //float calcu_theta1 = (ay > 0) ? Mathf.Atan2(az, -ay)*Mathf.Rad2Deg : 180-Mathf.Atan2(az, ay)*Mathf.Rad2Deg;
@@ -86,7 +86,7 @@ public class ik_test_ver1 : MonoBehaviour
         
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
-        float theta1 = (calcu_theta1-0);
+        float theta1 = (calcu_theta1-180);
         float theta2 = -(calcu_theta2+180);
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         //특이점 예외 처리
