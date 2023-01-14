@@ -49,7 +49,7 @@ public class ik_test_ver1 : MonoBehaviour
         Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az+" "+"ax*ay*az: "+ax*ay*az);
         
         float s2 = ax/L1;
-        float c2 = (ay>0)&&(az == 0) ? (Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2));
+        float c2 = (ay>0) ? (Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2));
         //float c2 = (az == 0) ? (ay > 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2)) : (az > 0 ? (-Mathf.Sqrt(1-s2*s2)) : (-Mathf.Sqrt(1-s2*s2)));
         //float c2 = (ay>0) ? (az >= 0 ? -Mathf.Sqrt(1-s2*s2) : Mathf.Sqrt(1-s2*s2)) : (az >= 0 ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2));
         //Debug.Log("c2: "+c2+" "+"s2: "+s2);
@@ -58,8 +58,8 @@ public class ik_test_ver1 : MonoBehaviour
         //Debug.Log("c1: "+c1+" "+"s1: "+s1);
 
         //float calcu_theta1 = (az == 0) ? Mathf.Atan2(s1, c1)*Mathf.Rad2Deg : Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
-        //float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
-        float calcu_theta1 = Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
+        float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
+        //float calcu_theta1 = Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
         //if(az==0 && ax!=0 && ay!=0) calcu_theta1 = Mathf.Atan2(az, Mathf.Abs(ay))*Mathf.Rad2Deg;
         //else if(ay==0 && ax!=0 && az!=0) calcu_theta1 = Mathf.Atan2(Mathf.Abs(az), ay)*Mathf.Rad2Deg;
         //else if(ax !=0 && ay!=0 && az!=0) calcu_theta1 = (ay>0) ? (Mathf.Atan2(-az, -ay)*Mathf.Rad2Deg) : (Mathf.Atan2(az, ay)*Mathf.Rad2Deg);
@@ -98,11 +98,9 @@ public class ik_test_ver1 : MonoBehaviour
         if (!float.IsNaN(theta1)){
             left_shoulder_pitch.transform.localEulerAngles = new Vector3(theta1, 0, 0);
             }
-            /*
         if (!float.IsNaN(theta2)){
             left_shoulder_roll.transform.localEulerAngles = new Vector3(0, 0, theta2);
             }
-            */
         //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         /*
         Debug.Log("theta 1: "+theta1+"  "
