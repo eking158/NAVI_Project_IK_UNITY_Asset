@@ -15,34 +15,41 @@ public class spherical_wrist : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        float L1=(float)Vector3.Distance(target_joint_1.transform.position,target_joint_2.transform.position);  // = 높이
+        float L2=(float)Vector3.Distance(target_joint_4.transform.position,target_end.transform.position);  // ~ end effector
+        //Debug.Log("L1: "+L1+" "+ "L2: " + L2);
+
         float px_pre=(int)((-target_end.transform.position.x)*10000);
-        float pz_pre=(int)((target_end.transform.position.y)*10000);
+        float pz_pre=(int)((target_end.transform.position.y-L1)*10000);
         float py_pre=(int)((target_end.transform.position.z)*10000);
         float px = px_pre/10000;
         float py = py_pre/10000;
         float pz = pz_pre/10000;
         //Debug.Log("px: "+px+" "+ "py: " + py + " " + "pz: " + pz + " ");
 
-        float L1=(float)Vector3.Distance(target_joint_1.transform.position,target_joint_2.transform.position);  // = 높이
-        float L2=(float)Vector3.Distance(target_joint_4.transform.position,target_end.transform.position);  // ~ end effector
-        //Debug.Log("L1: "+L1+" "+ "L2: " + L2);
-
-
-        float c2 = (pz-L1)/L2;
+        float c2 = pz/L2;
         //float c2 = Mathf.Sqrt(1-s2*s2);
-        float s2 = (pz-L1)> 0 ? Mathf.Sqrt(1-c2*c2) : -Mathf.Sqrt(1-c2*c2);
+        float s2 = Mathf.Sqrt(1-c2*c2);
         //Debug.Log("s2: "+s2+" "+ "c2: " + c2);
 
-        float theta2=Mathf.Atan2(s2,c2)*Mathf.Rad2Deg-90;
-        float theta1=Mathf.Atan2(pz,-px)*Mathf.Rad2Deg;
+        float c1 = px/(s2*L2);
+        float s1 = py/(s2*L2);
+
+        float theta2 = (pz)> 0 ? Mathf.Atan2(s2,c2)*Mathf.Rad2Deg : Mathf.Atan2(-s2,c2)*Mathf.Rad2Deg;
+        //float theta2 = (pz)> 0 ? (px > 0 ? Mathf.Atan2(s2,c2)*Mathf.Rad2Deg : Mathf.Atan2(s2,-c2)*Mathf.Rad2Deg) : (px > 0 ? Mathf.Atan2(-s2,-c2)*Mathf.Rad2Deg : Mathf.Atan2(-s2,c2)*Mathf.Rad2Deg);
+        float theta1 = s2 > 0 ? Mathf.Atan2(s1*s2, c1*s2)*Mathf.Rad2Deg : Mathf.Atan2(-s1*s2, -c1*s2)*Mathf.Rad2Deg;
+        //float theta1 = s2 > 0 ? Mathf.Atan2(pz,-px)*Mathf.Rad2Deg;
         Debug.Log("theta 1: "+theta1+" "+ "theta 2: " + theta2 );
 
 
 
+        //
+        /*
         if (!float.IsNaN(theta1))
             servo_1.transform.localEulerAngles = new Vector3(0, theta1,0);
+            */
         if (!float.IsNaN(theta2))
-            servo_2.transform.localEulerAngles = new Vector3(0, 0, theta2+180);
+            servo_2.transform.localEulerAngles = new Vector3(0, 0, theta2-90);
     }
 }
 
