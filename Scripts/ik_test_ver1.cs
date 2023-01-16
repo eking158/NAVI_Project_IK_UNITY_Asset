@@ -59,7 +59,8 @@ public class ik_test_ver1 : MonoBehaviour
 
         //float calcu_theta1 = (az == 0) ? Mathf.Atan2(s1, c1)*Mathf.Rad2Deg : Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
         //float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
-        float calcu_theta1 = Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
+        float calcu_theta1 = c2>0 ? Mathf.Atan2(az, -ay)*Mathf.Rad2Deg : Mathf.Atan2(-az, ay)*Mathf.Rad2Deg;
+        //float calcu_theta1 = Mathf.Atan2(az, -ay)*Mathf.Rad2Deg;
         //if(az==0 && ax!=0 && ay!=0) calcu_theta1 = Mathf.Atan2(az, Mathf.Abs(ay))*Mathf.Rad2Deg;
         //else if(ay==0 && ax!=0 && az!=0) calcu_theta1 = Mathf.Atan2(Mathf.Abs(az), ay)*Mathf.Rad2Deg;
         //else if(ax !=0 && ay!=0 && az!=0) calcu_theta1 = (ay>0) ? (Mathf.Atan2(-az, -ay)*Mathf.Rad2Deg) : (Mathf.Atan2(az, ay)*Mathf.Rad2Deg);
