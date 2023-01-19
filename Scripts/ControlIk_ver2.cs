@@ -17,10 +17,10 @@ public class ControlIk_ver2 : MonoBehaviour
     {
         /*
         좌표축 변환
-        unity   real
-        x       y
-        y       z
-        z       x
+        unity   real  calcu
+        x       y     x
+        y       z     z
+        z       x     y
 
         */
 
@@ -29,16 +29,18 @@ public class ControlIk_ver2 : MonoBehaviour
         이를 실제 축으로 환산하면 x -> y -> z 가 된다.
 
         */
-        float px=(float)target_end.transform.position.z;
-        float py=(float)target_end.transform.position.x;
+        float px=(float)target_end.transform.position.x;
+        float py=(float)target_end.transform.position.z;
         float pz=(float)target_end.transform.position.y;
         //Debug.Log("px: "+px+" "+ "py: " + py + " " + "pz: " + pz + " ");
 
-        float model_y = target_end.transform.eulerAngles.x;
-        float rx = (model_y>=90 && model_y<270) ? target_end.transform.eulerAngles.z-0 : target_end.transform.eulerAngles.z;
-        float ry = model_y;
-        float rz = (model_y>=90 && model_y<270) ? target_end.transform.eulerAngles.y-0 : target_end.transform.eulerAngles.y;
-        Debug.Log("rx: "+rx+" "+ "ry: " + ry + " " + "rz: " + rz + " ");
+        float model_x = target_end.transform.rotation.x;
+        //if(model_x>-0.70711 && model_x<0.70711)
+        float rx = 0;
+        float ry = model_x>-0.70711 && model_x<0.70711 ? -target_end.transform.eulerAngles.z : -target_end.transform.eulerAngles.z-180; 
+        ry = target_end.transform.eulerAngles.z==0 ? 0.001f : ry;
+        float rz = model_x>-0.70711 && model_x<0.70711 ? target_end.transform.eulerAngles.y : target_end.transform.eulerAngles.y-180;
+        Debug.Log("rx: "+rx+"  "+ "ry: " + ry + "  " + "rz: " + rz + "  ");
 
         float cx = Mathf.Cos((rx)*Mathf.Deg2Rad);
         float cy = Mathf.Cos((ry)*Mathf.Deg2Rad);
@@ -80,15 +82,18 @@ public class ControlIk_ver2 : MonoBehaviour
         //Debug.Log("s2: "+s2+" "+ "c2: " + c2);
 
 
-        float theta1 = ay>=0 ? Mathf.Atan2(r23, r13)*Mathf.Rad2Deg : Mathf.Atan2(-r23, -r13)*Mathf.Rad2Deg;
-        float theta2 = ay>=0 ? Mathf.Atan2(Mathf.Sqrt(r13*r13 + r23*r23), r33)*Mathf.Rad2Deg : Mathf.Atan2(-Mathf.Sqrt(r13*r13 + r23*r23), r33)*Mathf.Rad2Deg;
+        float theta1 = ay>0 ? Mathf.Atan2(r23, r13)*Mathf.Rad2Deg : Mathf.Atan2(-r23, -r13)*Mathf.Rad2Deg;
+        float theta2 = ay>0 ? -Mathf.Atan2(Mathf.Sqrt(r13*r13 + r23*r23), r33)*Mathf.Rad2Deg : -Mathf.Atan2(-Mathf.Sqrt(r13*r13 + r23*r23), r33)*Mathf.Rad2Deg;
         //Debug.Log("theta 1: "+theta1+" "+ "theta 2: " + theta2 );
         //Debug.Log(model_theta1);
 
+
+        //Debug.Log(target_end.transform.rotation);
+
         
         if (!float.IsNaN(theta1))
-            servo_1.transform.localEulerAngles = new Vector3(0, theta1+90,0);
+            servo_1.transform.localEulerAngles = new Vector3(0, theta1);
         if (!float.IsNaN(theta2))
-            servo_2.transform.localEulerAngles = new Vector3(0, 0, theta2+180);
+            servo_2.transform.localEulerAngles = new Vector3(0, 0, theta2);
     }
 }
