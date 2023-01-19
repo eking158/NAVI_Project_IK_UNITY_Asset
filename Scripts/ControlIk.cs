@@ -22,7 +22,7 @@ public class ControlIk : MonoBehaviour
         float px2=(float)target_joint_3.transform.position.x;
         float py2=(float)target_joint_3.transform.position.y;
         float pz2=(float)target_joint_3.transform.position.z;
-        Debug.Log("px: "+px+" "+ "py: " + py + " " + "pz: " + pz + " ");
+        //Debug.Log("px: "+px+" "+ "py: " + py + " " + "pz: " + pz + " ");
 
         float L1=(float)Vector3.Distance(target_joint_1.transform.position,target_joint_2.transform.position);  //d1
         float L2=(float)Vector3.Distance(target_joint_2.transform.position,target_joint_3.transform.position);  //a1
@@ -38,17 +38,18 @@ public class ControlIk : MonoBehaviour
         float c2 = (ax> 0) ? Mathf.Sqrt(1-s2*s2) : -Mathf.Sqrt(1-s2*s2);
         float c1 = px/(L2+L3*c2);
         float s1 = pz/(L2+L3*c2);
-        Debug.Log("s2: "+s2+" "+ "c2: " + c2);
-        float theta2 = Mathf.Atan2(s2,c2)*Mathf.Rad2Deg;
-        float theta1 = Mathf.Atan2(s1,c1)*Mathf.Rad2Deg;
-        //float theta1 = theta2>90&&theta2<=180 || theta2>-1800&&theta2<=-90 ? Mathf.Atan2(pz,-px)*Mathf.Rad2Deg : Mathf.Atan2(pz,-px)*Mathf.Rad2Deg-180;
+        //Debug.Log("s2: "+s2+" "+ "c2: " + c2);
+        float model_theta1 = servo_1.transform.localEulerAngles.y-180;
+        float theta2 = model_theta1>90&&model_theta1<180 || model_theta1>-1800&&model_theta1<=-90 ? Mathf.Atan2(s2,c2)*Mathf.Rad2Deg : Mathf.Atan2(s2,c2)*Mathf.Rad2Deg;
+        //float theta1 = Mathf.Atan2(pz,px)*Mathf.Rad2Deg;
+        float theta1 = theta2>90&&theta2<180 || theta2>-1800&&theta2<=-90 ? Mathf.Atan2(pz,-px)*Mathf.Rad2Deg : Mathf.Atan2(pz,-px)*Mathf.Rad2Deg-180;
         //float theta1 = theta2>90&&theta2<=180 || theta2>-1800&&theta2<=-90 ? Mathf.Atan2(s1,c1)*Mathf.Rad2Deg : Mathf.Atan2(s1,c1)*Mathf.Rad2Deg-180;
-        //Debug.Log("theta 1: "+theta1+" "+ "theta 2: " + theta2 );
+        Debug.Log("theta 1: "+theta1+" "+ "theta 2: " + theta2 );
+        //Debug.Log(model_theta1);
 
-        /*
+        
         if (!float.IsNaN(theta1))
             servo_1.transform.localEulerAngles = new Vector3(0, theta1,0);
-            */
         if (!float.IsNaN(theta2))
             servo_2.transform.localEulerAngles = new Vector3(0, 0, theta2+180);
     }
