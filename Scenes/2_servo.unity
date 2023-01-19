@@ -2051,6 +2051,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1488299627}
   - component: {fileID: 1488299628}
+  - component: {fileID: 1488299629}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -2080,9 +2081,27 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1488299625}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fc1a6a7a2ef736243abbb5ac308c4d9e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target_joint_1: {fileID: 1340597440}
+  target_joint_2: {fileID: 2135468110}
+  target_joint_3: {fileID: 965078112}
+  target_end: {fileID: 542685104}
+  servo_1: {fileID: 207083126}
+  servo_2: {fileID: 40949253}
+--- !u!114 &1488299629
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1488299625}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09a0bca92420458cab567d4a18a175fd, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   target_joint_1: {fileID: 1340597440}
