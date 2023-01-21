@@ -2404,7 +2404,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 518033993}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.6, y: -0, z: 0}
+  m_LocalPosition: {x: -2.6, y: -0, z: 0.01}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -6642,6 +6642,7 @@ GameObject:
   - component: {fileID: 1356959052}
   - component: {fileID: 1356959053}
   - component: {fileID: 1356959054}
+  - component: {fileID: 1356959055}
   m_Layer: 0
   m_Name: Controller
   m_TagString: Untagged
@@ -6736,7 +6737,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1356959048}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 251685372588b6c76afe5ea5f32c4064, type: 3}
   m_Name: 
@@ -6752,6 +6753,31 @@ MonoBehaviour:
   left_elbow_yaw: {fileID: 1708899531}
   left_wrist_pitch: {fileID: 2014379631}
   left_wrist_roll: {fileID: 1074741642}
+--- !u!114 &1356959055
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1356959048}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8ecfda6faab3922497afc390876aa90, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  left_target_hand: {fileID: 1674902740}
+  left_target_wrist: {fileID: 2128071029}
+  left_target_elbow: {fileID: 518033994}
+  left_target_shoulder: {fileID: 700506222}
+  left_target_elbow_pitch: {fileID: 518033994}
+  left_shoulder_pitch: {fileID: 1254569197}
+  left_shoulder_roll: {fileID: 1922448116}
+  left_shoulder_yaw: {fileID: 1855586691}
+  left_elbow_pitch: {fileID: 475716440}
+  left_elbow_yaw: {fileID: 1708899531}
+  left_wrist_pitch: {fileID: 2014379631}
+  left_wrist_roll: {fileID: 1074741642}
+  left_vr: {fileID: 2128071029}
 --- !u!1 &1426196209
 GameObject:
   m_ObjectHideFlags: 0
