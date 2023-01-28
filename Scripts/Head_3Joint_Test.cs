@@ -19,15 +19,15 @@ public class Head_3Joint_Test : MonoBehaviour
         float ay=(float)left_target_head.transform.position.y;
         float az=(float)left_target_head.transform.position.z;
 
-        float head_pitch =left_target_neck.transform.localEulerAngles.x;
+        float head_pitch =-left_target_neck.transform.localEulerAngles.x;
         float head_roll =left_target_neck.transform.localEulerAngles.z;
         float head_yaw =left_target_neck.transform.localEulerAngles.y;
         
         if (!float.IsNaN(head_pitch)){
-            left_head_pitch.transform.localEulerAngles = new Vector3(head_pitch, 0, 0);
+            left_head_pitch.transform.localEulerAngles = new Vector3(0, head_pitch, 0);
         }
         if (!float.IsNaN(head_roll)){
-            left_head_roll.transform.localEulerAngles = new Vector3(0, 0, head_roll);
+            left_head_roll.transform.localEulerAngles = new Vector3(0, head_roll, 0);
         }
         if (!float.IsNaN(head_yaw)){
             left_head_yaw.transform.localEulerAngles = new Vector3(0, head_yaw, 0);

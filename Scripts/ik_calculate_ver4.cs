@@ -202,24 +202,21 @@ public class ik_calculate_ver4 : MonoBehaviour
         float wrist_yaw =left_target_hand.transform.eulerAngles.y-90;
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
-        float theta1 = -calcu_theta1;
+        float theta1 = calcu_theta1;
         float theta2 = calcu_theta2-90;
         float theta3 = -(calcu_theta3+90);
-        float theta4 = -calcu_theta4-90;
+        float theta4 = (calcu_theta4+90);
         float theta5 = (calcu_theta5+0);
         float theta6 = -calcu_theta6-90;
         float theta7 = calcu_theta7;
-        //float theta2 = constrain(calcu_theta2-90, -90, 90);
-        //float theta3 = constrain(-(calcu_theta3+90),-89,89);
-        //float theta4 = constrain(-calcu_theta4-90,-179,-5);
 
         //특이점 처리 구간////////////////////////////////////////////////////////////////////////////////////////////////////////
         if(theta2==-90){  //theta2가 90인 상황에서는 theta4가 반응하지 못함
             theta2=1;
         }
         
-        if(theta4>-5){  //theta4가 0인 상황에서는 동작이 이상해짐
-            theta4=-5;
+        if(theta4<5){  //theta4가 0인 상황에서는 동작이 이상해짐
+            theta4=5;
         }
         
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -252,10 +249,10 @@ public class ik_calculate_ver4 : MonoBehaviour
 
 
         if (!float.IsNaN(theta1)){
-            left_shoulder_pitch.transform.localEulerAngles = new Vector3(theta1, 0, 0);
+            left_shoulder_pitch.transform.localEulerAngles = new Vector3(0, theta1, 0);
             }
         if (!float.IsNaN(theta2)){
-            left_shoulder_roll.transform.localEulerAngles = new Vector3(0, 0, theta2);
+            left_shoulder_roll.transform.localEulerAngles = new Vector3(0, theta2, 0);
             }
         if (!float.IsNaN(theta3)){
             left_shoulder_yaw.transform.localEulerAngles = new Vector3(0, theta3, 0);
@@ -263,19 +260,19 @@ public class ik_calculate_ver4 : MonoBehaviour
 
 
         if (!float.IsNaN(theta4)){
-            left_elbow_pitch.transform.localEulerAngles = new Vector3(theta4, 0, 0);
+            left_elbow_pitch.transform.localEulerAngles = new Vector3(0, theta4, 0);
             }
+            /*
         if (!float.IsNaN(theta5)){
             left_elbow_yaw.transform.localEulerAngles = new Vector3(0, theta5, 0);
             }
 
 
-            /*
         if (!float.IsNaN(theta6)){
-            left_wrist_pitch.transform.localEulerAngles = new Vector3(theta6, 0, 0);
+            left_wrist_pitch.transform.localEulerAngles = new Vector3(0, theta6, 0);
             }
         if (!float.IsNaN(theta7)){
-            left_wrist_roll.transform.localEulerAngles = new Vector3(0, 0, theta7);
+            left_wrist_roll.transform.localEulerAngles = new Vector3(0, theta7, 0);
             }
             */
             
