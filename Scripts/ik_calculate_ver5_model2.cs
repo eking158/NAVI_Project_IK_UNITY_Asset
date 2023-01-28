@@ -30,14 +30,12 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 
-public class ik_calculate_ver4 : MonoBehaviour
+public class ik_calculate_ver5_model2 : MonoBehaviour
 {
-    public Transform left_target_hand, left_target_wrist, left_target_elbow, left_target_shoulder;
-    public Transform left_target_elbow_pitch;
+    public Transform left_target_hand, left_target_hand_yaw, left_target_wrist, left_target_elbow, left_target_shoulder;
     public Transform left_shoulder_pitch, left_shoulder_roll, left_shoulder_yaw;
-    public Transform left_elbow_pitch, left_elbow_yaw;
-    public Transform left_wrist_pitch, left_wrist_roll;
-    public Transform left_vr;
+    public Transform left_elbow_pitch;
+    public Transform left_wrist_pitch, left_wrist_roll, left_wrist_yaw;
 
     //public TextMeshProUGUI angle;
 
@@ -104,7 +102,11 @@ public class ik_calculate_ver4 : MonoBehaviour
         float ay3=(float)(left_target_hand.transform.position.y-left_target_wrist.position.y);
         float az3=(float)(left_target_hand.transform.position.z-left_target_wrist.position.z);
         float ax3=(float)(left_target_hand.transform.position.x-left_target_wrist.position.x);  //손목 기준으로 본 손 좌표
-        //Debug.Log("ax3: "+ax3+" "+"ay3: "+ay3+" "+"az3: "+az3);
+
+        float ay4=(float)(left_target_hand_yaw.transform.position.y-left_target_wrist.position.y);
+        float az4=(float)(left_target_hand_yaw.transform.position.z-left_target_wrist.position.z);
+        float ax4=(float)(left_target_hand_yaw.transform.position.x-left_target_wrist.position.x);  //손목 기준으로 본 손 좌표(yaw 해석 전용)
+        //Debug.Log("ax4: "+ax4+" "+"ay4: "+ay4+" "+"az4: "+az4);
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -118,7 +120,6 @@ public class ik_calculate_ver4 : MonoBehaviour
         float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
         float calcu_theta2 = Mathf.Atan2(s2, c2)*Mathf.Rad2Deg;
         //Debug.Log("calcu_theta1: "+calcu_theta1+" "+"c2: "+c2+" "+"s2: "+s2+" "+"c1: "+c1+" "+"s1: "+s1+" "+"L1: "+L1);
-
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         float c1_c = Mathf.Cos((-calcu_theta1)*Mathf.Deg2Rad);
@@ -136,7 +137,6 @@ public class ik_calculate_ver4 : MonoBehaviour
         float cz = c2_c*bz - by*s2_c;
         //Debug.Log("cx: "+cx+" "+"cy: "+cy+" "+"cz: "+cz);
 
-        float get_theta4 = left_target_elbow_pitch.transform.localEulerAngles.y;
         float s4 = (L1+cz)/L2;
         float c4 = Mathf.Sqrt(1-s4*s4);
         float c3 = -cy/(L2*c4);
@@ -146,7 +146,6 @@ public class ik_calculate_ver4 : MonoBehaviour
         float calcu_theta3 = Mathf.Atan2(s3, c3)*Mathf.Rad2Deg;
         float calcu_theta4 = Mathf.Atan2(s4, c4)*Mathf.Rad2Deg;
         //Debug.Log("calcu_theta 3: "+calcu_theta3+" "+"calcu_theta 4: "+calcu_theta4);
-
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
         float c3_c = Mathf.Cos((-calcu_theta3-90)*Mathf.Deg2Rad);
@@ -173,42 +172,75 @@ public class ik_calculate_ver4 : MonoBehaviour
         float ex3 = dx3;
         float ey3 = c4_c*dy3 + dz3*s4_c;
         float ez3 = c4_c*dz3 - dy3*s4_c;
-        Debug.Log("ex3: "+ex3+" "+"ey3: "+ey3+" "+"ez3: "+ez3);
+        //Debug.Log("ex3: "+ex3+" "+"ey3: "+ey3+" "+"ez3: "+ez3);
 
-        float s5 = ex3/L3;
-        float c5 = ez3/L3;
+        float s6 = ex3/L3;
+        float c6 = Mathf.Sqrt(1-s6*s6);
+        float s5 = ey3/(L3*c6);
+        float c5 = ez3/(L3*c6);
 
         float calcu_theta5 = Mathf.Atan2(s5, c5)*Mathf.Rad2Deg;
-        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        float c5_c = Mathf.Cos((calcu_theta5)*Mathf.Deg2Rad);
-        float s5_c = Mathf.Sin((calcu_theta5)*Mathf.Deg2Rad);
-
-        float fx3 = c5_c*ex3 - ez3*s5_c;
-        float fy3 = ey3;
-        float fz3 = c5_c*ez3 + ex3*s5_c;
-        //Debug.Log("fx3: "+fx3+" "+"fy3: "+fy3+" "+"fz3: "+fz3);
-
-        float s7 = fx3/L3;
-        float c7 = Mathf.Sqrt(1-s7*s7);
-        float s6 = fy3/(L3*c7);
-        float c6 = fz3/(L3*c7);
-
         float calcu_theta6 = Mathf.Atan2(s6, c6)*Mathf.Rad2Deg;
-        float calcu_theta7 = Mathf.Atan2(s7, c7)*Mathf.Rad2Deg;
         //Debug.Log("calcu_theta 6: "+calcu_theta6+" "+"calcu_theta 7: "+calcu_theta7);
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        float wrist_pitch =left_target_hand.transform.eulerAngles.z-180;
-        float wrist_roll =left_target_hand.transform.eulerAngles.x;
-        float wrist_yaw =left_target_hand.transform.eulerAngles.y-90;
+        float c5_c = Mathf.Cos((-calcu_theta5+90)*Mathf.Deg2Rad);
+        float s5_c = Mathf.Sin((-calcu_theta5+90)*Mathf.Deg2Rad);
+        float c6_c = Mathf.Cos((calcu_theta6)*Mathf.Deg2Rad);
+        float s6_c = Mathf.Sin((calcu_theta6)*Mathf.Deg2Rad);
+
+        float bx4 = ax4;
+        float by4 = c1_c*ay4 + az4*s1_c;
+        float bz4 = c1_c*az4 - ay4*s1_c;
+        //Debug.Log("bx3: "+bx3+" "+"by3: "+by3+" "+"bz3: "+bz3);
+
+        float cx4 = c2_c*bx4 + by4*s2_c;
+        float cy4 = c2_c*by4 - bx4*s2_c;
+        float cz4 = bz4;
+        //Debug.Log("cx3: "+cx3+" "+"cy3: "+cy3+" "+"cz3: "+cz3);
+
+        float dx4 = c3_c*cx4 - cz4*s3_c;
+        float dy4 = cy4;
+        float dz4 = c3_c*cz4 + cx4*s3_c;
+        //Debug.Log("dx3: "+dx3+" "+"dy3: "+dy3+" "+"dz3: "+dz3);
+
+        float ex4 = dx4;
+        float ey4 = c4_c*dy4 + dz4*s4_c;
+        float ez4 = c4_c*dz4 - dy4*s4_c;
+        //Debug.Log("ex3: "+ex3+" "+"ey3: "+ey3+" "+"ez3: "+ez3);
+
+        float fx4 = ex4;
+        float fy4 = c5_c*ey4 + ez4*s5_c;
+        float fz4 = c5_c*ez4 - ey4*s5_c;
+        //Debug.Log("fx3: "+fx3+" "+"fy3: "+fy3+" "+"fz3: "+fz3);
+
+        float gx4 = c6_c*fx4 - fy4*s6_c;
+        float gy4 = c6_c*fy4 + fx4*s6_c;
+        float gz4 = fz4;
+        /*
+        float gx3 = c6_c*fx3 - fz3*s6_c;
+        float gy3 = fy3;
+        float gz3 = c6_c*fz3 + fx3*s6_c;
+        */
+        /*
+        float gx3 = fx3;
+        float gy3 = c6_c*fy3 + fz3*s6_c;
+        float gz3 = c6_c*fz3 - fy3*s6_c;
+        */
+        //Debug.Log("gx4: "+gx4+" "+"gy4: "+gy4+" "+"gz4: "+gz4);
+
+        float s7 = gx4/L3;
+        float c7 = gz4/L3;
+
+        float calcu_theta7 = Mathf.Atan2(s7, c7)*Mathf.Rad2Deg;
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
         float theta1 = -calcu_theta1;
         float theta2 = calcu_theta2-90;
         float theta3 = -(calcu_theta3+90);
         float theta4 = -calcu_theta4-90;
-        float theta5 = (calcu_theta5+0);
-        float theta6 = -calcu_theta6-90;
-        float theta7 = calcu_theta7;
+        float theta5 = -(calcu_theta5+90);
+        float theta6 = calcu_theta6;
+        float theta7 = -(calcu_theta7+90);
         //float theta2 = constrain(calcu_theta2-90, -90, 90);
         //float theta3 = constrain(-(calcu_theta3+90),-89,89);
         //float theta4 = constrain(-calcu_theta4-90,-179,-5);
@@ -246,7 +278,7 @@ public class ik_calculate_ver4 : MonoBehaviour
         }
         */
 
-        //Debug.Log("theta 1: "+theta1+"  "+"theta 2: "+theta2+"  "+"theta3: "+theta3+"  "+"theta4: "+theta4+" "+"theta5: "+theta5+" "+"theta6: "+theta6);
+        Debug.Log("theta 1: "+theta1+"  "+"theta 2: "+theta2+"  "+"theta3: "+theta3+"  "+"theta4: "+theta4+" "+"theta5: "+theta5+" "+"theta6: "+theta6+" "+"theta7: "+theta7);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -265,34 +297,16 @@ public class ik_calculate_ver4 : MonoBehaviour
         if (!float.IsNaN(theta4)){
             left_elbow_pitch.transform.localEulerAngles = new Vector3(theta4, 0, 0);
             }
+
         if (!float.IsNaN(theta5)){
-            left_elbow_yaw.transform.localEulerAngles = new Vector3(0, theta5, 0);
+            left_wrist_pitch.transform.localEulerAngles = new Vector3(theta5, 0, 0);
             }
-
-
-            /*
         if (!float.IsNaN(theta6)){
-            left_wrist_pitch.transform.localEulerAngles = new Vector3(theta6, 0, 0);
+            left_wrist_roll.transform.localEulerAngles = new Vector3(0, 0, theta6);
             }
         if (!float.IsNaN(theta7)){
-            left_wrist_roll.transform.localEulerAngles = new Vector3(0, 0, theta7);
+            left_wrist_yaw.transform.localEulerAngles = new Vector3(0, theta7, 0);
             }
-            */
-            
-
-            /*
-        if (!float.IsNaN(wrist_yaw)){
-            left_elbow_yaw.transform.localEulerAngles = new Vector3(0, wrist_yaw, 0);
-            }
-
-
-        if (!float.IsNaN(wrist_pitch)){
-            left_wrist_pitch.transform.localEulerAngles = new Vector3(wrist_pitch, 0, 0);
-            }
-        if (!float.IsNaN(wrist_roll)){
-            left_wrist_roll.transform.localEulerAngles = new Vector3(0, 0, wrist_roll);
-            }
-            */
 
             //각 theta값 화면에 출력
             //angle.text = "theta 1: "+(int)theta1+" "+"theta 2: "+(int)theta2+" "+"theta 3: "+(int)theta3+"\n"+"theta 4: "+(int)theta4+" "+"theta 5: "+(int)theta5+"\n"+"theta 6: "+(int)theta6+" "+"theta 7: "+(int)theta7;
