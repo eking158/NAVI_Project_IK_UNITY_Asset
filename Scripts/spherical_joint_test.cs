@@ -19,12 +19,13 @@ public class spherical_joint_test : MonoBehaviour
         float shoulder_roll =get_EulerAngles(left_target_elbow).z-90;
         float shoulder_yaw =get_EulerAngles(left_target_elbow).y;
 
-        //Debug.Log(left_target_shoulder.transform.localEulerAngles);
+        Debug.Log(left_target_shoulder.transform.localEulerAngles);
+        //Debug.Log(left_target_shoulder.rotation.eulerAngles);
         //Debug.Log(left_target_elbow.transform.eulerAngles);
         //Debug.Log(shoulder_roll-shoulder_pitch);
         //Debug.Log(Quaternion.Angle(left_target_shoulder.transform.rotation, left_target_elbow.transform.rotation));
         //Debug.Log("shoulder_pitch: "+shoulder_pitch+" "+"shoulder_roll: "+shoulder_roll+" "+"shoulder_yaw: "+shoulder_yaw);
-        Debug.Log(get_EulerAngles(left_target_elbow));
+        //Debug.Log(get_EulerAngles(left_target_elbow));
         //get_EulerAngles(left_target_elbow);
         
         
@@ -54,7 +55,7 @@ public class spherical_joint_test : MonoBehaviour
         float quat_z = target_object.transform.rotation.z;
         float quat_w = target_object.transform.rotation.w;
 
-        Debug.Log(target_object.transform.rotation);
+        //Debug.Log(target_object.transform.rotation);
 
         float x = quat_x>-standard_1 && quat_x<standard_1 ? x_pre : 180-x_pre;
         float y = quat_x>-standard_1 && quat_x<standard_1 ? y_pre : y_pre-180;

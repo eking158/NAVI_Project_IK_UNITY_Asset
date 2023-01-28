@@ -69,9 +69,9 @@ public class ik_calculate_ver4 : MonoBehaviour
         float L1=L1_pre/10000;
         float L2=L2_pre/10000;
         float L3=L3_pre/10000;
-        //Debug.Log("L1: "+L1+" "+"L2: "+L2);
+        //Debug.Log("L1: "+L1+" "+"L2: "+L2+"L3: "+L3);
 
-        
+        /*
         float ax_pre=(int)((left_target_elbow.transform.position.x-left_target_shoulder.position.x)*10000);
         float ay_pre=(int)((left_target_elbow.transform.position.y-left_target_shoulder.position.y)*10000);
         float az_pre=(int)((left_target_elbow.transform.position.z-left_target_shoulder.position.z)*10000);  
@@ -88,6 +88,23 @@ public class ik_calculate_ver4 : MonoBehaviour
         float ay2=ay2_pre/10000;
         float az2=az2_pre/10000;//어깨를 기준으로 본 손목 좌표
         //Debug.Log("ax2: "+ax2+" "+"ay2: "+ay2+" "+"az2: "+az2);
+        */
+        float ax=(float)left_target_elbow.transform.position.x-left_target_shoulder.position.x;
+        float ay=(float)left_target_elbow.transform.position.y-left_target_shoulder.position.y;
+        float az=(float)left_target_elbow.transform.position.z-left_target_shoulder.position.z;  //어깨를 기준으로 본 팔꿈치 좌표
+        //Debug.Log("ax: "+ax+" "+"ay: "+ay+" "+"az: "+az);
+        
+
+        float ay2=(float)left_target_wrist.transform.position.x-left_target_shoulder.position.x;
+        float az2=(float)left_target_wrist.transform.position.y-left_target_shoulder.position.y;
+        float ax2=(float)left_target_wrist.transform.position.z-left_target_shoulder.position.z;  //어깨를 기준으로 본 손목 좌표
+        //Debug.Log("ax2: "+ax2+" "+"ay2: "+ay2+" "+"az2: "+az2);
+
+
+        float ay3=(float)(left_target_hand.transform.position.x-left_target_wrist.position.x);
+        float az3=(float)(left_target_hand.transform.position.y-left_target_wrist.position.y);
+        float ax3=(float)(left_target_hand.transform.position.z-left_target_wrist.position.z);  //손목 기준으로 본 손 좌표
+        //Debug.Log("ax3: "+ax3+" "+"ay3: "+ay3+" "+"az3: "+az3);
 
         /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -95,6 +112,7 @@ public class ik_calculate_ver4 : MonoBehaviour
         float s2 = Mathf.Sqrt(1-c2*c2);
         float c1 = -ay/(L1*s2);
         float s1 = az/(L1*s2);
+        
 
         //theta 1 ~ 4까지 계산
         float calcu_theta1 = Mathf.Atan2(s1, c1)*Mathf.Rad2Deg;
@@ -131,14 +149,56 @@ public class ik_calculate_ver4 : MonoBehaviour
 
 
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-        float calcu_theta5 =left_vr.transform.localEulerAngles.y;
+        float c3_c = Mathf.Cos((-calcu_theta3-90)*Mathf.Deg2Rad);
+        float c4_c = Mathf.Cos((-calcu_theta4-90)*Mathf.Deg2Rad);
+        float s3_c = Mathf.Sin((-calcu_theta3-90)*Mathf.Deg2Rad);
+        float s4_c = Mathf.Sin((-calcu_theta4-90)*Mathf.Deg2Rad);
+        //Debug.Log("c4_c: "+c4_c+" "+"s4_c: "+s4_c);
+
+        float bx3 = c1_c*ax3 - az3*s1_c;
+        float by3 = ay3;
+        float bz3 = c1_c*az3 + ax3*s1_c;
+        //Debug.Log("bx3: "+bx3+" "+"by3: "+by3+" "+"bz3: "+bz3);
+
+        float cx3 = bx3;
+        float cy3 = c2_c*by3 + bz3*s2_c;
+        float cz3 = c2_c*bz3 - by3*s2_c;
+        //Debug.Log("cx3: "+cx3+" "+"cy3: "+cy3+" "+"cz3: "+cz3);
+
+        float dx3 = c3_c*cx3 + cy3*s3_c;
+        float dy3 = c3_c*cy3 - cx3*s3_c;
+        float dz3 = cz3;
+        //Debug.Log("dx3: "+dx3+" "+"dy3: "+dy3+" "+"dz3: "+dz3);
+
+        float ex3_pre = (int)((c4_c*dx3 - dz3*s4_c)*1000);
+        float ey3_pre = (int)((dy3)*1000);
+        float ez3_pre = (int)((c4_c*dz3 + dx3*s4_c)*1000);
+        float ex3 = ex3_pre/1000;
+        float ey3 = ey3_pre/1000;
+        float ez3 = ez3_pre/1000;
+        Debug.Log("ex3: "+ex3+" "+"ey3: "+ey3+" "+"ez3: "+ez3);
+
+        float s6 = ez3/L3;
+        float c6 = ex3>0 ? Mathf.Sqrt(1-s6*s6) : -Mathf.Sqrt(1-s6*s6);
+        float s5 = ey3/(L1*c6);
+        float c5 = ex3/(L3*c6);
+        
+
+        //theta 5 ~ 6까지 계산
+        float calcu_theta5 = Mathf.Atan2(s5, c5)*Mathf.Rad2Deg;
+        float calcu_theta6 = Mathf.Atan2(s6, c6)*Mathf.Rad2Deg;
+        ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+        float wrist_pitch =left_target_hand.transform.eulerAngles.z-180;
+        float wrist_roll =left_target_hand.transform.eulerAngles.x;
+        float wrist_yaw =left_target_hand.transform.eulerAngles.y-90;
         ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
          //계산된 theta를 로봇 3d 모델에 맞춰주기
         float theta1 = -calcu_theta1;
         float theta2 = calcu_theta2-90;
         float theta3 = -(calcu_theta3+90);
         float theta4 = -calcu_theta4-90;
-        float theta5 = calcu_theta5;
+        float theta5 = (calcu_theta5+0);
+        float theta6 = -(calcu_theta6+90);
         //float theta2 = constrain(calcu_theta2-90, -90, 90);
         //float theta3 = constrain(-(calcu_theta3+90),-89,89);
         //float theta4 = constrain(-calcu_theta4-90,-179,-5);
@@ -147,9 +207,11 @@ public class ik_calculate_ver4 : MonoBehaviour
         if(theta2==-90){  //theta2가 90인 상황에서는 theta4가 반응하지 못함
             theta2=1;
         }
+        
         if(theta4>-5){  //theta4가 0인 상황에서는 동작이 이상해짐
             theta4=-5;
         }
+        
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
         //안전을 위한 예외 처리 구간////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -174,7 +236,7 @@ public class ik_calculate_ver4 : MonoBehaviour
         }
         */
 
-        Debug.Log("theta 1: "+theta1+"  "+"theta 2: "+theta2+"  "+"theta3: "+theta3+"  "+"theta4: "+theta4);
+        Debug.Log("theta 1: "+theta1+"  "+"theta 2: "+theta2+"  "+"theta3: "+theta3+"  "+"theta4: "+theta4+" "+"theta5: "+theta5+" "+"theta6: "+theta6);
         ////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -204,6 +266,20 @@ public class ik_calculate_ver4 : MonoBehaviour
             }
         if (!float.IsNaN(theta7)){
             left_wrist_roll.transform.localEulerAngles = new Vector3(0, 0, theta7);
+            }
+            */
+
+            /*
+        if (!float.IsNaN(wrist_yaw)){
+            left_elbow_yaw.transform.localEulerAngles = new Vector3(0, wrist_yaw, 0);
+            }
+
+
+        if (!float.IsNaN(wrist_pitch)){
+            left_wrist_pitch.transform.localEulerAngles = new Vector3(wrist_pitch, 0, 0);
+            }
+        if (!float.IsNaN(wrist_roll)){
+            left_wrist_roll.transform.localEulerAngles = new Vector3(0, 0, wrist_roll);
             }
             */
 
@@ -285,6 +361,51 @@ T_13=T_12*T_23
 T_36=T_34*T_46
 
 T_16=T_12*T_23*T_34*T_46
+
+
+<case (3)>
+syms theta5 theta6
+syms L3
+syms c5 c6
+syms s5 s6
+
+T_56=kinematics_T(theta5, 0, 0, 90);
+T_68=kinematics_T(theta6, 0, L3, 0);
+
+T_56 = [c5,0,s5,0;s5,0,-c5,0;0,1,0,0;0,0,0,1];
+T_68 = [c6, -s6, 0, L3*c6;s6,c6,0,L3*s6;0,0,1,0;0,0,0,1];
+
+T_58 = T_56*T_68
+------------------------------------------------------------------------------
+T_58 =
+[c5*c6, -c5*s6,  s5, L3*c5*c6]
+[c6*s5, -s5*s6, -c5, L3*c6*s5]
+[   s6,     c6,   0,    L3*s6]
+[    0,      0,   0,        1]
+------------------------------------------------------------------------------
+
+
+<case (?)>
+syms theta5 theta6 theta7
+syms L3
+syms c5 c6 c7
+syms s5 s6 s7
+
+T_56=kinematics_T(theta5, 0, 0, 90);
+T_67=kinematics_T(theta6, 0, 0, 90);
+T_78=kinematics_T(theta7, 0, L3, 0);
+
+T_56 = [c5,0,s5,0;s5,0,-c5,0;0,1,0,0;0,0,0,1];
+T_67 = [c6, 0, s6, 0;s6, 0, -c6, 0;0, 1, 0, 0;0, 0, 0, 1];
+T_78 = [c7, -s7, 0, L3*c7;s7,c7,0,L3*s7;0,0,1,0;0,0,0,1];
+
+T_58 = T_56*T_67*T_78
+------------------------------------------------------------------------------
+[s5*s7 + c5*c6*c7,   c7*s5 - c5*c6*s7, c5*s6, L3*s5*s7 + L3*c5*c6*c7]
+[c6*c7*s5 - c5*s7, - c5*c7 - c6*s5*s7, s5*s6, L3*c6*c7*s5 - L3*c5*s7]
+[           c7*s6,             -s6*s7,   -c6,               L3*c7*s6]
+[               0,                  0,     0,                      1]
+------------------------------------------------------------------------------
 */
 
 
